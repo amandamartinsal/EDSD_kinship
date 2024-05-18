@@ -38,7 +38,7 @@ Some useful things to know:
 
 - Download the syllabus: https://github.com/alburezg/EDSD_2023_kinship_demography/blob/main/EDSD_2023_kinship.pdf [UPDATE WITH THE FINAL VERSION]
 - The course's slides are available here: https://github.com/alburezg/EDSD_2023_kinship_demography/tree/main/slides [UPDATE WITH DIEGOS SLIDES]
-- Find this website's source code on GitHub: https://amandamartinsal.github.io/EDSD_kinship
+- Find this website's source code on GitHub: https://github.com/amandamartinsal/EDSD_kinship
 
 ![](Picture4.png)
 
