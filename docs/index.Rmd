@@ -64,7 +64,6 @@ library(DemoKin)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-library(fields)
 ```
 
 #### 2. Built-in data
@@ -147,8 +146,10 @@ We can estimate rates from any country in the world, produced by the World Popul
    -  Life Tables, 1950 - 2021:
    [Females](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Life_Table_Complete_Medium_Female_1950-2021.zip)
    [Males](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Life_Table_Complete_Medium_Male_1950-2021.zip)
+
    
-In the materials in the Github repositories you downloaded for this course, there is a folder called docs:
+After downloading the data for other countries, please download the entire GitHub repository [here](https://github.com/amandamartinsal/EDSD_kinship) and save it to your computer.
+In the materials you have downloaded for this course, there is a folder called docs:
 
    - Create a folder named unwppdata inside the folder docs;
  
@@ -212,13 +213,13 @@ br_2015$kin_summary %>%
 
 ##### 6.1 Using the WPP data you downloaded, build the 'Keyfitz' kinship diagram for a Focal girl aged 5 yo in a time-invariant population. Discuss (with 2 or 3 colleagues) the results in relation to what we have seen for Sweden and Brazil: identify the main differences and the reasons for them.
 
-```{r 16}
+```{r 16, include=FALSE}
 # Write your code here
 ```
 
 ##### 6.2 We saw the 'Keyfitz' kinship diagram for a Focal girl aged 5 yo, but what about an older Focal, for example, a woman 60 yo, what would you expected? Build the kinship diagram for this Focal for Sweden, Brazil and the country of your choice and discuss.
 
-```{r 17}
+```{r 17, include=FALSE}
 # Write your code here
 ```
 
@@ -262,7 +263,6 @@ In today's session we will see the `DemoKin` functions and how to run a one-sex;
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-library(fields)
 library(DemoKin)
 ```
 
@@ -483,7 +483,17 @@ br_2015$kin_summary %>%
   theme(legend.position = "bottom")
 ```
 
-A member of the population aged 15, 50, and 65yo will have experienced, on average, the death of ```{r} loss2 %>% filter(age_focal %in% c(15, 50, 65)) %>% pull(count) %>% round(1) %>% paste(., collapse = ", "){}}``` relatives, respectively.
+A member of the population aged 15, 50, and 65 years old will have experienced, on average, the death of relatives, respectively:
+
+```{r}
+loss2 %>%
+  filter(age_focal %in% c(15, 50, 65)) %>%
+  select(count_cum_dead) %>%
+  pull(count_cum_dead) %>%
+  round(1) %>%
+  paste(collapse = ", ")
+
+```
 
 #### 3. Exercises
 
@@ -494,7 +504,7 @@ A member of the population aged 15, 50, and 65yo will have experienced, on avera
 Use `DemoKin` (assuming time-invariant rates at the 2015 levels in the country of your choice and a female-only population) to explore offspring survival and loss for mothers. 
 **Answer**:  What is the expected number of surviving offspring for an average woman aged 65?
 
-```{r 33}
+```{r 33, include=FALSE}
 br_2015 <-
   kin(p = br_surv_2015, f = br_asfr_2015, time_invariant = TRUE)
 br_2015$kin_summary %>%
@@ -504,7 +514,7 @@ br_2015$kin_summary %>%
 
 **Answer**: What is the cumulative number of offspring deaths experienced by an average woman who survives to age 65? 
 
-```{r 34}
+```{r 34, include=FALSE}
 br_2015$kin_summary %>%
   filter(age_focal == 65, kin == "d") %>%
       select(age_focal, loss_2015 = count_cum_dead)
@@ -514,7 +524,7 @@ br_2015$kin_summary %>%
 
 The output of DemoKin::kin includes information on the average age of Focal’s relatives (in the columns kin_summary\$mean_age and kin_summary\$sd_age). For example, this allows us to determine the mean age, standard deviation and coefficient of variation of Focal’s sisters over Focal’s life-course:
 
-```{r 35,warning=F, message=F}
+```{r 35,warning=F, message=F, include=FALSE}
 br_2015$kin_summary %>%
   filter(kin %in% c("os", "ys")) %>%
   rename_kin() %>%
@@ -529,9 +539,9 @@ br_2015$kin_summary %>%
 ```
 sing only the raw output in `kin_full`:
 
-##### 3.2.1 Get then mean age of living mother, daughter and sisters for a female aged 35.
+##### 3.2.1 Using only the raw output in kin_full, get then mean age of living mother, daughter and sisters for a female aged 35.
 
-```{r 36}
+```{r 36, include=FALSE}
 mean_ages_2015 <-
   br_2015$kin_full %>%
   filter(age_focal == 35) %>%
@@ -550,7 +560,7 @@ Use DemoKin to obtain $M_1(a)$, the probability of having a living mother at age
 
 **Answer:** What is the probability that Focal has a living mother when Focal turns 70 years old? And 25 years old?
 
-```{r 37}
+```{r 37, include=FALSE}
 br_2015$kin_summary %>% 
   filter(kin == "m", 
          age_focal == 70) %>% 
@@ -562,12 +572,6 @@ br_2015$kin_summary %>%
   select(count_living)
 ```
 
-
-#### 5. Session info
-
-```{r 38}
-sessionInfo()
-```
 
 <!-- --------------------------------------------------------------------- -->
 
@@ -619,7 +623,6 @@ br_px <- data %>%
 The data we are using has years in columns and ages in rows. Here, we plot $q_x$ (p's complement) over age and time:
 
 ```{r 41}
-data("br_px", package="DemoKin")
 br_px %>%
     as.data.frame() %>%
     mutate(age = 1:nrow(swe_asfr)-1) %>%
@@ -634,7 +637,6 @@ br_px %>%
 Age-specific fertility rates:
 
 ```{r 42}
-data("br_asfr", package="DemoKin")
 br_asfr %>% as.data.frame() %>%
      mutate(age = 1:nrow(swe_asfr)-1) %>%
      pivot_longer(-age, names_to = "year", values_to = "asfr") %>%
@@ -648,17 +650,8 @@ And female population by age: (`br_pop.RData` available in the folder )
 ```{r 43, warning=FALSE}
 load("br_pop.RData")
 
-data("br_pop", package="DemoKin")
 br_pop %>% as.data.frame() %>%
      mutate(age = 1:nrow(swe_asfr)-1) %>%
-     pivot_longer(-age, names_to = "year", values_to = "pop") %>%
-     mutate(year = as.integer(year)) %>%
-     ggplot() + geom_tile(aes(x = year, y = age, fill = pop)) +
-     scale_x_continuous(breaks = seq(1900,2020,10), labels = seq(1900,2020,10))
-
-
-br_pop %>% as.data.frame() %>%
-     mutate(age = 1:nrow(br_asfr)-1) %>%
      pivot_longer(-age, names_to = "year", values_to = "pop") %>%
      mutate(year = as.integer(year)) %>%
      ggplot() + geom_tile(aes(x = year, y = age, fill = pop)) +
@@ -717,8 +710,6 @@ br_time_varying_1990_1960_cohort$kin_summary %>%
   facet_wrap(~kin)+
   theme_bw()
 ```
-
-**Answer**: Do you notice any unexpected trend for some kin type when comparing across cohorts? What may be causing it?
 
 ##### 1.2 Period approach
 
@@ -992,7 +983,7 @@ kin_out_time_variant$kin_summary %>%
 
 Let's see an example for Brazil: 
 
-```{r 59, warning=F, message=FALSE}
+```{r 59, warning=F, message=FALSE, include=FALSE}
 # load function
 source("UNWPP_data.R")
 
@@ -1033,7 +1024,7 @@ br_surv_males <- data_males %>%
 
 ##### 4.1.2 In a time invariant model: how many living grand-mothers and grand-fathers can a woman expect to have at age 15 in 1950 and in 2015, and what are their mean ages? Extract a conclusion based on the results.
 
-```{r 61}
+```{r 61, include=FALSE}
 kin_out_1950 <- kin2sex(
                       pf = br_surv_females[,"1950"],
                       pm = br_surv_males[,"1950"],
@@ -1062,7 +1053,7 @@ bind_rows(
 
 ##### 4.1.3 Compare 'kin sex ratios' of grandparents, parents, daughters and siblings in a time-variant framework for the cohort 1950, at each age of Focal.
 
-```{r 62}
+```{r 62, include=FALSE}
 kin_out_2015 <- kin2sex(
                       pf = br_surv_females,
                       pm = br_surv_males,
@@ -1094,29 +1085,27 @@ For the country of your choice, how many living kins by sex can a woman expect t
 - One-sex model; time-invariant rates; GKP factors
 - Two-sex model; time-variant rates; approximate male kin using the androgynous assumption (i.e., male fertility is equivalent to female fertility); use mortality rates for males and females
 
-```{r 63}
+```{r 63, include=FALSE}
 ## GKP factors
 
 gkp_factors <-
   data.frame(
   kin = c("m","gm","ggm","d","gd","ggd","oa","ya","os","ys","coa","cya","nos","nys"),
-  kolk_kin = c("parents","grandparents",NA, "children","grandchildren",NA,"uncles/aunts","uncles/aunts","siblings","siblings","cousins",
-"cousins","nephews/nieces","nephews/nieces"),
   factor = c(2,4,8,2,4,4,4,4,2,2,8,8,4,4))
 ```
 
 - One-sex model; time-invariant rates; GKP factors
 
-```{r 64, warning=F, message=FALSE}
+```{r 64, warning=F, message=FALSE, include=FALSE}
 Model_1 <-
   kin(br_surv_females[,"2015"], br_asfr_females[,"2015"], birth_female = .5)$kin_summary %>% 
-  inner_join(gkp_factors %>% select(-2)) %>% 
+  inner_join(gkp_factors, by = "kin") %>% 
   mutate(count_living = count_living * factor)
 ```
 
 - Two-sex model; time-variant rates; approximate male kin using the androgynous assumption
 
-```{r 65}
+```{r 65, include=FALSE}
 Model_2 <- kin2sex(pf = br_surv_females,
                     pm = br_surv_males,
                     ff = br_asfr_females,
@@ -1138,24 +1127,27 @@ For a detailed description of extensions of the matrix kinship model, see:
 
 <!-- --------------------------------------------------------------------- -->
 
-#### Assignment
+## Assignment
 
 ##### Description
 
 You will use data on kinship structures to benchmark formal models of kinship.
-For this exercise, you should use `DemoKin` and choose one country and at least two of the specifications shown below. 
+For this exercise, you will use the **DemoKin** R package to implement formal models of kinship. You should choose one country and run four different models according to the following specifications:
 
-###### 1 Specifications of the kinship model:
-       (a) One-sex model; approximate male kin using GKP factors
-        i. time-invariant rates
-        ii. item time-variant rates
-       (b) One-sex model; approximate male kin using the androgynous assumption
-        i. time-invariant rates
-        ii. item time-variant rates
-        
-###### 2 Plot the **expected number of living relatives** and the **expected number of deceased relatives** for each specification you selected. 
-###### 3 Discuss 1-2 key insights, when would you use different specifications? (max 250 words)
-###### 4 Considering the male fertility options we looked at during the course: What other approaches would you suggest? (max 250 words)
+- One-sex model; approximate male kin using GKP factors
+     - time-invariant rates
+     - time-variant rates
+- One-sex model; approximate male kin using the androgynous assumption
+     - time-invariant rates
+     - time-variant rates
+
+Use the output of the four models to answer the following questions:
+
+1. Plot the **expected number of living relatives by age of focal** for each specification. For extra points (i.e., this is optional), also plot the **expected number of deceased relatives by age of focal**.
+
+2. Discuss 1-2 key insights, when would you use different specifications? Consider the specific context and the data available for the country you selected. (max 250 words)
+
+3. Can you think of other ways of incorporating male fertility into the kinship models (beyond the options we discussed in the course)?  (max 250 words)
 
 #### Handing in the assignment
 
