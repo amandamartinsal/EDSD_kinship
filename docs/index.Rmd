@@ -422,14 +422,14 @@ How old are Focal's relatives? Using the `kin_full` data frame, we can visualize
 
 ```{r 30, fig.height=6, fig.width=8}
 br_2015$kin_full %>%
-  rename_kin %>%
+  rename_kin() %>%
   filter(age_focal == 35) %>%
   ggplot() +
   geom_line(aes(age_kin, living)) +
   geom_vline(xintercept = 35, color=2) +
   labs(y = "Expected number of living relatives") +
   theme_bw() +
-  facet_wrap(~kin)
+  facet_wrap(~kin_label)
 ```
 
 ##### 2.3. Deceased kin
@@ -439,7 +439,7 @@ The output of `kin` also includes information of kin deaths experienced by Focal
 
 We start by considering the number of kin deaths that can expect to experience at each age. In other words, the non-cumulative number of deaths in the family that Focal experiences at a given age.  
 
-```{r 31}
+```{r 31, message=FALSE, warning=FALSE}
 loss1 <- 
   br_2015$kin_summary %>%
   filter(age_focal>0) %>%
@@ -448,12 +448,13 @@ loss1 <-
   ungroup()
 
 br_2015$kin_summary %>%
+  rename_kin() %>%
   filter(age_focal > 0) %>%
-  group_by(age_focal, kin) %>%
+  group_by(age_focal, kin_label) %>%
   summarise(count_dead = sum(count_dead)) %>%
   ungroup() %>%
   ggplot(aes(x = age_focal, y = count_dead)) +
-    geom_area(aes(fill = kin), colour = "black") +
+    geom_area(aes(fill = kin_label), colour = "black") +
     geom_line(data = loss1, size = 2) +
     labs(x = "Focal's age", y = "Number of kin deaths experienced at each age") +
     coord_cartesian(ylim = c(0, 0.086)) +
@@ -472,11 +473,12 @@ loss2 <-
   ungroup()
 
 br_2015$kin_summary %>%
-  group_by(age_focal, kin) %>% 
+  rename_kin() %>% 
+  group_by(age_focal, kin_label) %>% 
   summarise(count_cum_dead = sum(count_cum_dead)) %>% 
   ungroup() %>% 
  ggplot(aes(x = age_focal, y = count_cum_dead)) +
-  geom_area(aes(fill = kin), colour = "black") +
+  geom_area(aes(fill = kin_label), colour = "black") +
   geom_line(data = loss2, aes(y = count_cum_dead), size = 2) +
   labs(x = "Focal's age", y = "Number of kin deaths experienced (cumulative)") +
   theme_bw() +
