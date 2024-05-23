@@ -681,15 +681,15 @@ br_time_varying_1960_cohort <-
 
 # plot
 br_time_varying_1960_cohort$kin_summary %>%
-  DemoKin::rename_kin() %>%
+  rename_kin() %>%
   ggplot(aes(age_focal,count_living)) +
   geom_line()+
   scale_y_continuous(name = "Expected number of living relatives",labels = seq(0,3,.2),breaks = seq(0,3,.2))+
-  facet_wrap(~kin)+
+  facet_wrap(~kin_label)+
   theme_bw()
 ```
 
-These are the living kin that for an average woman born in 1960, given the time-variant fertility, mortality and population distribution for the 1950-2021 period. If population is included as input then $pi(t)$ will be "observed". Note the argument `output_cohort = 1960`, used to extract estimates for a given cohort of Focals (a diagonal in the Lexis diagram). This is a subset from all possible results (101 age-classes and 119 years). Estimates stop at age 58 because we only provided (period) input data up to year 2018 (`2018 - 1960 = 58`).
+These are the living kin that for an average woman born in 1960, given the time-variant fertility, mortality and population distribution for the 1950-2021 period. If population is included as input then $pi(t)$ will be "observed". Note the argument `output_cohort = 1960`, used to extract estimates for a given cohort of Focals (a diagonal in the Lexis diagram). This is a subset from all possible results (101 age-classes and 71 years). Estimates stop at age 61 because we only provided (period) input data up to year 2021 (`2021 - 1960 = 61`).
 
 Let us now compare across cohorts. We can, for example compare the 1960 and 1990 cohorts.
 
@@ -704,12 +704,12 @@ br_time_varying_1990_1960_cohort <-
 
 # plot
 br_time_varying_1990_1960_cohort$kin_summary %>%
-  DemoKin::rename_kin() %>%
+  rename_kin() %>%
   mutate(cohort = as.factor(cohort)) %>%
   ggplot(aes(age_focal,count_living,color=cohort)) +
   geom_line()+
   scale_y_continuous(name = "Expected number of living relatives",labels = seq(0,3,.2), breaks = seq(0,3,.2))+
-  facet_wrap(~kin)+
+  facet_wrap(~kin_label)+
   theme_bw()
 ```
 
@@ -730,7 +730,7 @@ br_time_varying_1960_period <-
 
 # plot
 br_time_varying_1960_period$kin_summary %>%
-  DemoKin::rename_kin() %>%
+  rename_kin() %>%
   ggplot(aes(age_focal, count_living)) +
   geom_line() +
   scale_y_continuous(
@@ -739,7 +739,7 @@ br_time_varying_1960_period$kin_summary %>%
     labels = seq(0, 5, 0.5),  
     breaks = seq(0, 5, 0.5)  
   ) +
-  facet_wrap(~kin, scales = "free") +
+  facet_wrap(~kin_label, scales = "free") +
   theme_bw()
 
 ```
@@ -771,13 +771,13 @@ The function `kin` provides information on the number of relatives lost by Focal
 
 ```{r 48, fig.height=6, fig.width=8, message=FALSE, warning=FALSE, eval=T}
 br_time_varying_1990_1960_cohort$kin_summary %>%
-  DemoKin::rename_kin() %>%
+  rename_kin() %>%
   mutate(cohort = as.factor(cohort)) %>%
   ggplot() +
   geom_line(aes(age_focal, count_cum_dead, col = cohort)) +
   labs(y = "Expected number of deceased relatives") +
   theme_bw() +
-  facet_wrap(~kin,scales="free")
+  facet_wrap(~kin_label,scales="free")
 ```
 
 **Answer**: Based on the previous plot, which kin types show the largest differences in terms of kin loss across the two cohorts? Discuss with regards to absolute and relative differences in the expected number of deaths by kin type.
@@ -787,13 +787,13 @@ Given these population-level measures, we can also compute Focal's mean age at t
 ```{r 49}
 br_time_varying_1990_1960_cohort$kin_summary %>%
   rename_kin() %>%
-  filter(age_focal == 50) %>%
-  select(kin, cohort, mean_age_lost) %>%
+  filter(age_focal == 30) %>%
+  select(kin_label, cohort, mean_age_lost) %>%
   pivot_wider(names_from = cohort, values_from = mean_age_lost) %>%
   mutate_if(is.numeric, round, 1)
 ```
 
-**Answer:** Consider a Focal aged 50 in both cohorts: how would you describe the differences in terms of her mean age at kin loss for different relatives types?
+**Answer:** Consider a Focal aged 30 in both cohorts: how would you describe the differences in terms of her mean age at kin loss for different relatives types?
 
 #### 3.Age-classified two-sex kinship models and some exercises (we will do in the afternoon).
 
@@ -873,10 +873,11 @@ kin_out <- fra_kin_2sex$kin_summary %>%
 
 kin_out %>%
   summarise(count=sum(count_living), .by = c(kin, age_focal, sex_kin)) %>%
+  rename_kin %>% 
   ggplot(aes(age_focal, count, fill=sex_kin))+
   geom_area()+
   theme_bw() +
-  facet_wrap(~kin)
+  facet_wrap(~kin_label)
 ```
 
 Information on kin availability by sex allows us to consider sex ratios, a traditional measure in demography, with females often in denominator. The following figure, for example, shows that a 25yo French woman in our hypothetical population can expect to have 0.5 grandfathers for every grandmother. Is always the case that the sex ratio will decrease by Focal´s age?
@@ -887,10 +888,11 @@ Information on kin availability by sex allows us to consider sex ratios, a tradi
 kin_out %>%
   group_by(kin, age_focal) %>%
   summarise(sex_ratio = sum(count_living[sex_kin=="m"], na.rm=T)/sum(count_living[sex_kin=="f"], na.rm=T)) %>%
+  rename_kin %>% 
   ggplot(aes(age_focal, sex_ratio))+
   geom_line()+
   theme_bw() +
-  facet_wrap(~kin, scales = "free")
+  facet_wrap(~kin_label, scales = "free")
 ```
 
 **Answer:** Should the total number of living aunts be the same in the one-sex model compared to the two-sex models? What about daughters?
@@ -902,16 +904,17 @@ We see a slightly different pattern for grandparents since Focal's experience of
 ```{r 55, message=FALSE, warning=FALSE}
 kin_out %>%
   summarise(count=sum(count_dead), .by = c(kin, sex_kin, age_focal)) %>%
+  rename_kin %>% 
   ggplot(aes(age_focal, count, col=sex_kin))+
   geom_line()+
   theme_bw() +
-  facet_wrap(~kin)
+  facet_wrap(~kin_label)
 ```
 
 ##### 3.3 Time-variant two-sex kinship models
 
 We look at populations where demographic rates are not static but change on a yearly basis.
-For this, we extend the period using data located in *"data/fra_2sex.Rdata"*, that you can load with function `load` as we did in previous days. This is UN data, so another exercise can be done with HMD and HFD going back in time.
+For this, we extend the period using data located in *"docs/fra_2sex.Rdata"*, that you can load with function `load` as we did in previous days. This is UN data, so another exercise can be done with HMD and HFD going back in time.
 For this example, we will 'pretend' that male fertility rates are the same than fertility but slightly older, translating shape for the difference in the mean age observed in 2012 (that you calculated before). Actually there is some data for the period 1998-2013 in [HFD](https://www.fertilitydata.org/Data/DataAvailability), but just to keep it simple so far (and also needs to extrapolate back level and pattern).
 
 ```{r 56}
@@ -970,9 +973,10 @@ kin_out_time_variant$kin_summary %>%
   filter(kin %in% c("d", "m", "gm", "ggm", "s", "a")) %>%
   group_by(type, kin, age_focal, sex_kin) %>%
   summarise(count=sum(count_living)) %>%
+  rename_kin %>% 
   ggplot(aes(age_focal, count, linetype=type))+
   geom_line()+ theme_bw() +
-  facet_grid(cols = vars(kin), rows=vars(sex_kin), scales = "free")
+  facet_grid(cols = vars(kin_label), rows=vars(sex_kin), scales = "free")
 ```
 
 > An interpretation note: we are not tracking line of descendence or ascendence. That means that for example, grand-daughters can not be differentiate if they are offspring from Focal´s son or Focal´s daughter. You can visualize this looking outputs from DemoKin and relating which data you can construct with actual variables. If you want to differentiate lines, probably "By hand" section can be a good first step.
@@ -1150,6 +1154,38 @@ Use the output of the four models to answer the following questions:
 2. Discuss 1-2 key insights, when would you use different specifications? Consider the specific context and the data available for the country you selected. (max 250 words)
 
 3. Can you think of other ways of incorporating male fertility into the kinship models (beyond the options we discussed in the course)?  (max 250 words)
+
+> If you choose work with time-variant rates, you need population data for the argument "n". Please download the data [here](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip).
+
+After downloading please save the data in the unwppdata folder you already created.
+
+```{r, warning=FALSE, message=FALSE}
+#run the function to prepare the data for DemoKin
+
+wpp_pop <- function(country_name) {
+  WPP2022_pop <- read_csv("unwppdata/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.csv")
+  
+    wpp <- WPP2022_pop %>% 
+    select(age = AgeGrpStart, country = Location, year = Time, pop = PopFemale) %>% 
+    filter(country == country_name) %>% 
+    pivot_wider(names_from = year, values_from = pop) %>% 
+    select(-age, -country) %>%
+    as.matrix()
+  
+  if (is.null(row.names(wpp))) {
+    row.names(wpp) <- seq_len(nrow(wpp))
+  }
+  
+  row.names(wpp)[1] <- "0"
+  
+  return(wpp)
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+br_pop <-
+  wpp_pop("Brazil") #choose your country 
+```
 
 #### Handing in the assignment
 
