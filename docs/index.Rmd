@@ -979,7 +979,7 @@ kin_out_time_variant$kin_summary %>%
   facet_grid(cols = vars(kin_label), rows=vars(sex_kin), scales = "free")
 ```
 
-> An interpretation note: we are not tracking line of descendence or ascendence. That means that for example, grand-daughters can not be differentiate if they are offspring from Focal´s son or Focal´s daughter. You can visualize this looking outputs from DemoKin and relating which data you can construct with actual variables. If you want to differentiate lines, probably "By hand" section can be a good first step.
+> An interpretation note: we are not tracking line of descendence or ascendence. That means that for example, grand-daughters can not be differentiate if they are offspring from Focal´s son or Focal´s daughter. You can visualize this looking outputs from DemoKin and relating which data you can construct with actual variables.
 
 #### 4. Exercises (let's go through this in the afternoon session)
 
@@ -989,7 +989,7 @@ kin_out_time_variant$kin_summary %>%
 
 Let's see an example for Brazil: 
 
-```{r 59, warning=F, message=FALSE, include=FALSE}
+```{r 59, warning=F, message=FALSE}
 # load function
 source("UNWPP_data.R")
 
@@ -1155,7 +1155,7 @@ Use the output of the four models to answer the following questions:
 
 3. Can you think of other ways of incorporating male fertility into the kinship models (beyond the options we discussed in the course)?  (max 250 words)
 
-> If you choose work with time-variant rates, you need population data for the argument "n". Please download the data [here](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip).
+> For time-variant model, you will need population data for the argument "n". Please download the data [here](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip).
 
 After downloading please save the data in the unwppdata folder you already created.
 

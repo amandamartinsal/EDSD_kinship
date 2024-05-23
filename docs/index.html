@@ -1478,9 +1478,7 @@ never-changing rates. Effects are the same for each sex?
 ascendence. That means that for example, grand-daughters can not be
 differentiate if they are offspring from Focal´s son or Focal´s
 daughter. You can visualize this looking outputs from DemoKin and
-relating which data you can construct with actual variables. If you want
-to differentiate lines, probably “By hand” section can be a good first
-step.</p>
+relating which data you can construct with actual variables.</p>
 </blockquote>
 </div>
 </div>
@@ -1497,25 +1495,39 @@ Don´t forget to reshape data to matrix format as we did yesterday.
 Assume for this exercise the same fertility pattern for males than
 females and answer:</h6>
 <p>Let’s see an example for Brazil:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a><span class="co"># reshape again</span></span>
-<span id="cb62-2"><a href="#cb62-2" tabindex="-1"></a></span>
-<span id="cb62-3"><a href="#cb62-3" tabindex="-1"></a>br_asfr_females <span class="ot">&lt;-</span> data_females <span class="sc">%&gt;%</span></span>
-<span id="cb62-4"><a href="#cb62-4" tabindex="-1"></a>  <span class="fu">select</span>(age, year, fx) <span class="sc">%&gt;%</span></span>
-<span id="cb62-5"><a href="#cb62-5" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> fx) <span class="sc">%&gt;%</span></span>
-<span id="cb62-6"><a href="#cb62-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span></span>
-<span id="cb62-7"><a href="#cb62-7" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
-<span id="cb62-8"><a href="#cb62-8" tabindex="-1"></a></span>
-<span id="cb62-9"><a href="#cb62-9" tabindex="-1"></a>br_surv_females <span class="ot">&lt;-</span> data_females <span class="sc">%&gt;%</span></span>
-<span id="cb62-10"><a href="#cb62-10" tabindex="-1"></a>  <span class="fu">select</span>(age, year, px) <span class="sc">%&gt;%</span></span>
-<span id="cb62-11"><a href="#cb62-11" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> px) <span class="sc">%&gt;%</span></span>
-<span id="cb62-12"><a href="#cb62-12" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span></span>
-<span id="cb62-13"><a href="#cb62-13" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
-<span id="cb62-14"><a href="#cb62-14" tabindex="-1"></a></span>
-<span id="cb62-15"><a href="#cb62-15" tabindex="-1"></a>br_surv_males <span class="ot">&lt;-</span> data_males <span class="sc">%&gt;%</span></span>
-<span id="cb62-16"><a href="#cb62-16" tabindex="-1"></a>  <span class="fu">select</span>(age, year, px) <span class="sc">%&gt;%</span></span>
-<span id="cb62-17"><a href="#cb62-17" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> px) <span class="sc">%&gt;%</span></span>
-<span id="cb62-18"><a href="#cb62-18" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span></span>
-<span id="cb62-19"><a href="#cb62-19" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a><span class="co"># load function</span></span>
+<span id="cb62-2"><a href="#cb62-2" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;UNWPP_data.R&quot;</span>)</span>
+<span id="cb62-3"><a href="#cb62-3" tabindex="-1"></a></span>
+<span id="cb62-4"><a href="#cb62-4" tabindex="-1"></a><span class="co">#data download</span></span>
+<span id="cb62-5"><a href="#cb62-5" tabindex="-1"></a>data_females <span class="ot">&lt;-</span> <span class="fu">UNWPP_data</span>(<span class="at">country =</span> <span class="st">&quot;Brazil&quot;</span>,</span>
+<span id="cb62-6"><a href="#cb62-6" tabindex="-1"></a>                   <span class="at">start_year =</span>  <span class="dv">1950</span>,</span>
+<span id="cb62-7"><a href="#cb62-7" tabindex="-1"></a>                   <span class="at">end_year =</span> <span class="dv">2022</span>,</span>
+<span id="cb62-8"><a href="#cb62-8" tabindex="-1"></a>                   <span class="at">sex =</span> <span class="st">&quot;Female&quot;</span>)</span>
+<span id="cb62-9"><a href="#cb62-9" tabindex="-1"></a></span>
+<span id="cb62-10"><a href="#cb62-10" tabindex="-1"></a></span>
+<span id="cb62-11"><a href="#cb62-11" tabindex="-1"></a>data_males <span class="ot">&lt;-</span> <span class="fu">UNWPP_data</span>(<span class="at">country =</span> <span class="st">&quot;Brazil&quot;</span>,</span>
+<span id="cb62-12"><a href="#cb62-12" tabindex="-1"></a>                   <span class="at">start_year =</span>  <span class="dv">1950</span>,</span>
+<span id="cb62-13"><a href="#cb62-13" tabindex="-1"></a>                   <span class="at">end_year =</span> <span class="dv">2022</span>,</span>
+<span id="cb62-14"><a href="#cb62-14" tabindex="-1"></a>                   <span class="at">sex =</span> <span class="st">&quot;Male&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="co"># reshape again</span></span>
+<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>br_asfr_females <span class="ot">&lt;-</span> data_females <span class="sc">%&gt;%</span></span>
+<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>  <span class="fu">select</span>(age, year, fx) <span class="sc">%&gt;%</span></span>
+<span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> fx) <span class="sc">%&gt;%</span></span>
+<span id="cb63-6"><a href="#cb63-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span></span>
+<span id="cb63-7"><a href="#cb63-7" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb63-8"><a href="#cb63-8" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="#cb63-9" tabindex="-1"></a>br_surv_females <span class="ot">&lt;-</span> data_females <span class="sc">%&gt;%</span></span>
+<span id="cb63-10"><a href="#cb63-10" tabindex="-1"></a>  <span class="fu">select</span>(age, year, px) <span class="sc">%&gt;%</span></span>
+<span id="cb63-11"><a href="#cb63-11" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> px) <span class="sc">%&gt;%</span></span>
+<span id="cb63-12"><a href="#cb63-12" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span></span>
+<span id="cb63-13"><a href="#cb63-13" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb63-14"><a href="#cb63-14" tabindex="-1"></a></span>
+<span id="cb63-15"><a href="#cb63-15" tabindex="-1"></a>br_surv_males <span class="ot">&lt;-</span> data_males <span class="sc">%&gt;%</span></span>
+<span id="cb63-16"><a href="#cb63-16" tabindex="-1"></a>  <span class="fu">select</span>(age, year, px) <span class="sc">%&gt;%</span></span>
+<span id="cb63-17"><a href="#cb63-17" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> px) <span class="sc">%&gt;%</span></span>
+<span id="cb63-18"><a href="#cb63-18" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span></span>
+<span id="cb63-19"><a href="#cb63-19" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span></code></pre></div>
 </div>
 <div id="in-a-time-invariant-model-how-many-living-grand-mothers-and-grand-fathers-can-a-woman-expect-to-have-at-age-15-in-1950-and-in-2015-and-what-are-their-mean-ages-extract-a-conclusion-based-on-the-results." class="section level5">
 <h5>4.1.2 In a time invariant model: how many living grand-mothers and
@@ -1595,33 +1607,33 @@ the kinship models (beyond the options we discussed in the course)? (max
 250 words)</p></li>
 </ol>
 <blockquote>
-<p>If you choose work with time-variant rates, you need population data
-for the argument “n”. Please download the data <a href="https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip">here</a>.</p>
+<p>For time-variant model, you will need population data for the
+argument “n”. Please download the data <a href="https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip">here</a>.</p>
 </blockquote>
 <p>After downloading please save the data in the unwppdata folder you
 already created.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="co">#run the function to prepare the data for DemoKin</span></span>
-<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a></span>
-<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>wpp_pop <span class="ot">&lt;-</span> <span class="cf">function</span>(country_name) {</span>
-<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>  WPP2022_pop <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;unwppdata/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.csv&quot;</span>)</span>
-<span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  </span>
-<span id="cb63-6"><a href="#cb63-6" tabindex="-1"></a>    wpp <span class="ot">&lt;-</span> WPP2022_pop <span class="sc">%&gt;%</span> </span>
-<span id="cb63-7"><a href="#cb63-7" tabindex="-1"></a>    <span class="fu">select</span>(<span class="at">age =</span> AgeGrpStart, <span class="at">country =</span> Location, <span class="at">year =</span> Time, <span class="at">pop =</span> PopFemale) <span class="sc">%&gt;%</span> </span>
-<span id="cb63-8"><a href="#cb63-8" tabindex="-1"></a>    <span class="fu">filter</span>(country <span class="sc">==</span> country_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb63-9"><a href="#cb63-9" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> pop) <span class="sc">%&gt;%</span> </span>
-<span id="cb63-10"><a href="#cb63-10" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>age, <span class="sc">-</span>country) <span class="sc">%&gt;%</span></span>
-<span id="cb63-11"><a href="#cb63-11" tabindex="-1"></a>    <span class="fu">as.matrix</span>()</span>
-<span id="cb63-12"><a href="#cb63-12" tabindex="-1"></a>  </span>
-<span id="cb63-13"><a href="#cb63-13" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(<span class="fu">row.names</span>(wpp))) {</span>
-<span id="cb63-14"><a href="#cb63-14" tabindex="-1"></a>    <span class="fu">row.names</span>(wpp) <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(wpp))</span>
-<span id="cb63-15"><a href="#cb63-15" tabindex="-1"></a>  }</span>
-<span id="cb63-16"><a href="#cb63-16" tabindex="-1"></a>  </span>
-<span id="cb63-17"><a href="#cb63-17" tabindex="-1"></a>  <span class="fu">row.names</span>(wpp)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;0&quot;</span></span>
-<span id="cb63-18"><a href="#cb63-18" tabindex="-1"></a>  </span>
-<span id="cb63-19"><a href="#cb63-19" tabindex="-1"></a>  <span class="fu">return</span>(wpp)</span>
-<span id="cb63-20"><a href="#cb63-20" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a>br_pop <span class="ot">&lt;-</span></span>
-<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a>  <span class="fu">wpp_pop</span>(<span class="st">&quot;Brazil&quot;</span>) <span class="co">#choose your country </span></span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a><span class="co">#run the function to prepare the data for DemoKin</span></span>
+<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" tabindex="-1"></a>wpp_pop <span class="ot">&lt;-</span> <span class="cf">function</span>(country_name) {</span>
+<span id="cb64-4"><a href="#cb64-4" tabindex="-1"></a>  WPP2022_pop <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;unwppdata/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.csv&quot;</span>)</span>
+<span id="cb64-5"><a href="#cb64-5" tabindex="-1"></a>  </span>
+<span id="cb64-6"><a href="#cb64-6" tabindex="-1"></a>    wpp <span class="ot">&lt;-</span> WPP2022_pop <span class="sc">%&gt;%</span> </span>
+<span id="cb64-7"><a href="#cb64-7" tabindex="-1"></a>    <span class="fu">select</span>(<span class="at">age =</span> AgeGrpStart, <span class="at">country =</span> Location, <span class="at">year =</span> Time, <span class="at">pop =</span> PopFemale) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-8"><a href="#cb64-8" tabindex="-1"></a>    <span class="fu">filter</span>(country <span class="sc">==</span> country_name) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-9"><a href="#cb64-9" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> pop) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-10"><a href="#cb64-10" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>age, <span class="sc">-</span>country) <span class="sc">%&gt;%</span></span>
+<span id="cb64-11"><a href="#cb64-11" tabindex="-1"></a>    <span class="fu">as.matrix</span>()</span>
+<span id="cb64-12"><a href="#cb64-12" tabindex="-1"></a>  </span>
+<span id="cb64-13"><a href="#cb64-13" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(<span class="fu">row.names</span>(wpp))) {</span>
+<span id="cb64-14"><a href="#cb64-14" tabindex="-1"></a>    <span class="fu">row.names</span>(wpp) <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(wpp))</span>
+<span id="cb64-15"><a href="#cb64-15" tabindex="-1"></a>  }</span>
+<span id="cb64-16"><a href="#cb64-16" tabindex="-1"></a>  </span>
+<span id="cb64-17"><a href="#cb64-17" tabindex="-1"></a>  <span class="fu">row.names</span>(wpp)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;0&quot;</span></span>
+<span id="cb64-18"><a href="#cb64-18" tabindex="-1"></a>  </span>
+<span id="cb64-19"><a href="#cb64-19" tabindex="-1"></a>  <span class="fu">return</span>(wpp)</span>
+<span id="cb64-20"><a href="#cb64-20" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>br_pop <span class="ot">&lt;-</span></span>
+<span id="cb65-2"><a href="#cb65-2" tabindex="-1"></a>  <span class="fu">wpp_pop</span>(<span class="st">&quot;Brazil&quot;</span>) <span class="co">#choose your country </span></span></code></pre></div>
 </div>
 <div id="handing-in-the-assignment" class="section level4">
 <h4>Handing in the assignment</h4>
