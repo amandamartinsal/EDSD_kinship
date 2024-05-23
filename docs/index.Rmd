@@ -1078,7 +1078,8 @@ kin_out_2015$kin_summary %>%
                          T ~ "error?")) %>% 
   summarise(count_living = sum(count_living), .by = c(age_focal, kin, sex_kin)) %>% 
   select(age_focal, kin, sex_kin, count_living) %>% 
-  pivot_wider(names_from = sex_kin, values_from = count_living) %>%   mutate(sex_ratio = m/f) %>% 
+  pivot_wider(names_from = sex_kin, values_from = count_living) %>%
+  mutate(sex_ratio = m/f) %>% 
   ggplot(aes(age_focal, sex_ratio, col=kin)) +
   geom_line()+
   theme_bw()
