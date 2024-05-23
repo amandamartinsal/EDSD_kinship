@@ -1078,8 +1078,7 @@ kin_out_2015$kin_summary %>%
                          T ~ "error?")) %>% 
   summarise(count_living = sum(count_living), .by = c(age_focal, kin, sex_kin)) %>% 
   select(age_focal, kin, sex_kin, count_living) %>% 
-  pivot_wider(names_from = sex_kin, values_from = count_living) %>% 
-  mutate(sex_ratio = m/f) %>% 
+  pivot_wider(names_from = sex_kin, values_from = count_living) %>%   mutate(sex_ratio = m/f) %>% 
   ggplot(aes(age_focal, sex_ratio, col=kin)) +
   geom_line()+
   theme_bw()
@@ -1143,7 +1142,7 @@ For this exercise, you will use the **DemoKin** R package to implement formal mo
 - One-sex model; approximate male kin using GKP factors
      - time-invariant rates
      - time-variant rates
-- One-sex model; approximate male kin using the androgynous assumption
+- Two-sex model; approximate male kin using the androgynous assumption
      - time-invariant rates
      - time-variant rates
 
@@ -1194,8 +1193,6 @@ You should hand in the following files:
 
   1. An .RMD file with all your code and answers to the exercise questions
   1. A compiled .pdf of your markdown file showing all the code
-  1. All input data needed to replicate your code 
-
 <!-- --------------------------------------------------------------------- -->
 
 ### References
