@@ -15,6 +15,7 @@ format:
     highlight: pygments
     page-layout: full
     # code_folding: hide
+    embed-resources: true
 bibliography: kinship.bib
 execute:
   cache: true
@@ -43,9 +44,9 @@ This has led to the development of sophisticated methodological and conceptual a
 
 Some useful things to know:
 
-- Download the syllabus: https://github.com/amandamartinsal/EDSD_kinship/blob/master/EDSD_2024_syllabus.pdf
-- The course's slides are available here: https://github.com/amandamartinsal/EDSD_kinship/tree/master/slides
-- Find this website's source code on GitHub: https://github.com/amandamartinsal/EDSD_kinship
+- Download the syllabus: [https://github.com/amandamartinsal/EDSD_kinship/blob/master/EDSD_2024_syllabus.pdf](https://github.com/amandamartinsal/EDSD_kinship/blob/master/EDSD_2024_syllabus.pdf)
+- The course's slides are available here: [https://github.com/amandamartinsal/EDSD_kinship/tree/master/slides](https://github.com/amandamartinsal/EDSD_kinship/tree/master/slides)
+- Find this website's source code on GitHub: [https://github.com/amandamartinsal/EDSD_kinship](https://github.com/amandamartinsal/EDSD_kinship)
 
 ![](Picture4.png)
 
@@ -1196,10 +1197,10 @@ br_pop <-
 
 #### Handing in the assignment
 
-Assignments (one per group) should be sent by email to martins@demogr.mpg.de **before midnight of Friday, May 24.** 
+Assignments (one per group) should be sent by email to [martins@demogr.mpg.de](mailto:martins@demogr.mpg.de) **before midnight of Friday, May 24.** 
 You should hand in the following files:
 
-  1. An .RMD file with all your code and answers to the exercise questions
+  1. An .QMD file with all your code and answers to the exercise questions
   1. A compiled .pdf of your markdown file showing all the code
 <!-- --------------------------------------------------------------------- -->
 
