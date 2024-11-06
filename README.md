@@ -12,4 +12,4 @@ Kinship Inequalities Research Group
 
 Max Planck Institute for Demographic Research
 
-To deploy, visit: https://amandamartinsal.github.io/EDSD_kinship 
+To deploy, visit: https://amandamartinsal.github.io/EDSD_kinship_23-24
