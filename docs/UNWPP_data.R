@@ -5,9 +5,9 @@ library(dplyr)
 UNWPP_data <- function(country, start_year, end_year, sex) {
   
   # Define file paths
-  fertility_file <- "unwppdata/WPP2022_Fertility_by_Age1.csv"
-  male_lifetable_file <- "unwppdata/WPP2022_Life_Table_Complete_Medium_Male_1950-2021.csv"
-  female_lifetable_file <- "unwppdata/WPP2022_Life_Table_Complete_Medium_Female_1950-2021.csv"
+  fertility_file <- "unwppdata/WPP2022_Fertility_by_Age1.zip"
+  male_lifetable_file <- "unwppdata/WPP2022_Life_Table_Complete_Medium_Male_1950-2021.zip"
+  female_lifetable_file <- "unwppdata/WPP2022_Life_Table_Complete_Medium_Female_1950-2021.zip"
   
   # Check if files exist
   if (!file.exists(fertility_file)) stop("Fertility data file not found: ", fertility_file)

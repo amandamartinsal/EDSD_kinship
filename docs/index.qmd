@@ -1,17 +1,24 @@
 ---
 title: "The Demography of Kinship"
 subtitle: "European Doctoral School of Demography, Paris, May 21-23, 2024"
-author: "Instructors: Diego Alburez-Gutierrez & Amanda Martins de Almeida"
+author:
+  - "Diego Alburez-Gutierrez"
+  - "Amanda Martins de Almeida"
 date: "Updated: `r Sys.Date()`"
-output:
-  html_document:
-    # toc_depth: 2
+format:
+  html:
+    toc_depth: 4
     toc_float: true
+    toc-location: left
     # number_sections: true
     theme: readable
     highlight: pygments
+    page-layout: full
     # code_folding: hide
+    embed-resources: true
 bibliography: kinship.bib
+execute:
+  cache: true
 ---
 
 ```{r 1 setup, include=FALSE}
@@ -25,7 +32,8 @@ options(scipen=999999)
 ```
 
 
-# {.tabset}
+
+::: {.panel-tabset}
 ## Introduction 
 
 #### Course description: 
@@ -36,9 +44,9 @@ This has led to the development of sophisticated methodological and conceptual a
 
 Some useful things to know:
 
-- Download the syllabus: https://github.com/amandamartinsal/EDSD_kinship/blob/master/EDSD_2024_syllabus.pdf
-- The course's slides are available here: https://github.com/amandamartinsal/EDSD_kinship/tree/master/slides
-- Find this website's source code on GitHub: https://github.com/amandamartinsal/EDSD_kinship
+- Download the syllabus: [https://github.com/amandamartinsal/EDSD_kinship/blob/master/EDSD_2024_syllabus.pdf](https://github.com/amandamartinsal/EDSD_kinship/blob/master/EDSD_2024_syllabus.pdf)
+- The course's slides are available here: [https://github.com/amandamartinsal/EDSD_kinship/tree/master/slides](https://github.com/amandamartinsal/EDSD_kinship/tree/master/slides)
+- Find this website's source code on GitHub: [https://github.com/amandamartinsal/EDSD_kinship](https://github.com/amandamartinsal/EDSD_kinship)
 
 ![](Picture4.png)
 
@@ -141,11 +149,11 @@ swe_2015$kin_summary %>%
 
 We can estimate rates from any country in the world, produced by the World Population Prospects project. Pick any country (feel free to pick at random or pick the one you are interested in) and download the following data from:
 
-   -  [Fertility, 1950 - 2100](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Fertility_by_Age1.zip)
+   -  [Fertility, 1950 - 2100](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Fertility_by_Age1.zip) ([backup link at Web Archive](https://web.archive.org/web/20231007122349/https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Fertility_by_Age1.zip))
    
    -  Life Tables, 1950 - 2021:
-   [Females](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Life_Table_Complete_Medium_Female_1950-2021.zip)
-   [Males](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Life_Table_Complete_Medium_Male_1950-2021.zip)
+   [Females](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Life_Table_Complete_Medium_Female_1950-2021.zip)  ([backup link at Web Archive](https://web.archive.org/web/20231007122403/https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Life_Table_Complete_Medium_Female_1950-2021.zip))
+   [Males](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Life_Table_Complete_Medium_Male_1950-2021.zip) ([backup link at Web Archive](https://web.archive.org/web/20231007122118/https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Life_Table_Complete_Medium_Male_1950-2021.zip))
 
    
 After downloading the data for other countries, please download the entire GitHub repository [here](https://github.com/amandamartinsal/EDSD_kinship) and save it to your computer.
@@ -1155,7 +1163,7 @@ Use the output of the four models to answer the following questions:
 
 3. Can you think of other ways of incorporating male fertility into the kinship models (beyond the options we discussed in the course)?  (max 250 words)
 
-> For time-variant model, you will need population data for the argument "n". Please download the data [here](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip).
+> For time-variant model, you will need population data for the argument "n". Please download the data [here](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip). ([backup link at Web Archive](https://web.archive.org/web/20231007122421/https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip))
 
 After downloading please save the data in the unwppdata folder you already created.
 
@@ -1163,7 +1171,7 @@ After downloading please save the data in the unwppdata folder you already creat
 #run the function to prepare the data for DemoKin
 
 wpp_pop <- function(country_name) {
-  WPP2022_pop <- read_csv("unwppdata/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.csv")
+  WPP2022_pop <- read_csv("unwppdata/WPP2022_Population1JanuaryBySingleAgeSex_Medium_1950-2021.zip")
   
     wpp <- WPP2022_pop %>% 
     select(age = AgeGrpStart, country = Location, year = Time, pop = PopFemale) %>% 
@@ -1189,10 +1197,10 @@ br_pop <-
 
 #### Handing in the assignment
 
-Assignments (one per group) should be sent by email to martins@demogr.mpg.de **before midnight of Friday, May 24.** 
+Assignments (one per group) should be sent by email to [martins@demogr.mpg.de](mailto:martins@demogr.mpg.de) **before midnight of Friday, May 24.** 
 You should hand in the following files:
 
-  1. An .RMD file with all your code and answers to the exercise questions
+  1. An .QMD file with all your code and answers to the exercise questions
   1. A compiled .pdf of your markdown file showing all the code
 <!-- --------------------------------------------------------------------- -->
 
